@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next-Gen Event Management Platform (P04)
+
+A comprehensive, fully deployed web application designed for seamless event organization, registration, QR check-in, and automated certification. Powered by Next.js and Google Gemini AI.
+
+## Features
+
+- **AI Event Description Generator**: Let Gemini write engaging, professional event descriptions based on titles and keywords in seconds.
+- **Event Creation & Management**: Organizers can create and manage their upcoming events through a centralized dashboard.
+- **Frictionless Registration**: Attendees can register quickly, receiving an automated Ticket with a secure QR code.
+- **QR Code Check-In**: Organizers can scan attendee QR codes at the venue using their camera (via HTML5 QR Scanner) to instantly verify and check-in guests.
+- **Automated Certificates**: Once an attendee is checked-in, they can view and download a beautifully styled PDF Certificate of Attendance.
+
+## Tech Stack
+
+- **Frontend**: Next.js 15 (App Router), React, Vanilla CSS Modules
+- **Backend**: Next.js API Routes (Serverless)
+- **Database**: SQLite with Prisma ORM
+- **AI Integration**: Google Gemini API (`@google/generative-ai`)
+- **QR & Certificates**: `qrcode`, `html5-qrcode`, `html2canvas`, `jspdf`
 
 ## Getting Started
 
-First, run the development server:
+### 1. Install Dependencies
+\`\`\`bash
+npm install
+\`\`\`
 
-```bash
+### 2. Setup Environment Variables
+Create a \`.env\` file in the root directory and add your Google Gemini API key:
+\`\`\`env
+GEMINI_API_KEY=your_gemini_api_key_here
+\`\`\`
+
+### 3. Initialize Database
+Initialize the SQLite database and Prisma client:
+\`\`\`bash
+npx prisma db push
+npx prisma generate
+\`\`\`
+
+### 4. Run Development Server
+\`\`\`bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+\`\`\`
+Visit \`http://localhost:3000\` to view the application.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## API Documentation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- \`GET /api/events\` - Fetches all events with registration counts.
+- \`POST /api/events\` - Creates a new event (requires \`title\`, \`description\`, \`date\`, \`location\`).
+- \`GET /api/events/:id\` - Fetches a specific event by ID.
+- \`POST /api/events/:id/register\` - Registers a user for an event (requires \`name\`, \`email\`).
+- \`POST /api/events/checkin\` - Checks in an attendee (requires \`registrationId\` from QR).
+- \`POST /api/generate-description\` - Generates an event description using AI (requires \`title\`, \`keywords\`).
+- \`GET /api/certificates/:id\` - Fetches a registration for certificate verification.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Architecture
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+See \`architecture_diagram.md\` for the Mermaid representation.
