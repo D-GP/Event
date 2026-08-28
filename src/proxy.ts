@@ -1,7 +1,7 @@
 import { type NextRequest } from 'next/server'
 import { createClient } from '@/utils/supabase/middleware'
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   // Use the createClient utility to refresh the auth token and set cookies
   return createClient(request)
 }
