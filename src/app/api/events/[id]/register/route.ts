@@ -40,7 +40,12 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     });
 
     if (existing) {
-      return NextResponse.json({ success: false, error: 'You are already registered for this event.' }, { status: 400 });
+      return NextResponse.json({
+        success: true,
+        alreadyRegistered: true,
+        registration: existing,
+        message: 'You are already registered for this event. Here is your ticket QR code!'
+      });
     }
 
     const registration = await prisma.registration.create({
