@@ -10,39 +10,60 @@ export default async function EventsPage() {
   });
 
   return (
-    <div className="container animate-fade-in" style={{ padding: '4rem 1.5rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
-        <h1 style={{ fontSize: '2.5rem' }}>Upcoming Events</h1>
+    <div className="container page-wrapper animate-fade-in" style={{ padding: '3rem 1.5rem' }}>
+      <div className="page-header">
+        <div>
+          <h1 className="page-title gradient-text">Upcoming Events</h1>
+          <p style={{ color: 'var(--muted)', marginTop: '0.5rem', fontSize: '0.9375rem' }}>
+            Discover and register for amazing events
+          </p>
+        </div>
         <Link href="/organizer/events/new" className="btn-primary">
           + Create Event
         </Link>
       </div>
 
       {events.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '4rem 0', color: 'var(--muted)' }}>
-          <p style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>No events found.</p>
-          <Link href="/organizer/events/new" className="btn-secondary">Be the first to create one</Link>
+        <div className="card empty-state">
+          <div className="empty-state-icon">🎪</div>
+          <h3 className="empty-state-title">No Events Yet</h3>
+          <p className="empty-state-desc">
+            Be the first to create an event and bring people together!
+          </p>
+          <Link href="/organizer/events/new" className="btn-primary">
+            Create Your First Event
+          </Link>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '2rem' }}>
-          {events.map((event: any) => (
-            <div key={event.id} className="card" style={{ display: 'flex', flexDirection: 'column' }}>
+        <div className="events-grid">
+          {events.map((event: any, index: number) => (
+            <div
+              key={event.id}
+              className={`card event-card animate-fade-in-up stagger-${Math.min(index + 1, 5)}`}
+            >
               <div style={{ marginBottom: '1rem' }}>
-                <div style={{ color: 'var(--accent)', fontWeight: 600, fontSize: '0.875rem', marginBottom: '0.5rem' }}>
-                  {new Date(event.date).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}
+                <div className="event-card-date">
+                  📅 {new Date(event.date).toLocaleDateString(undefined, {
+                    weekday: 'short',
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                  })}
                 </div>
-                <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>{event.title}</h3>
-                <p style={{ color: 'var(--muted)', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                  {event.description}
-                </p>
+                <h3 className="event-card-title">{event.title}</h3>
+                <p className="event-card-desc">{event.description}</p>
               </div>
-              <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '0.875rem', color: 'var(--muted)' }}>
-                  📍 {event.location} <br />
-                  👥 {event._count.registrations} registered
-                </span>
-                <Link href={`/events/${event.id}`} className="btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }}>
-                  View Details
+              <div className="event-card-footer">
+                <div className="event-card-meta">
+                  <span>📍 {event.location}</span>
+                  <span>👥 {event._count.registrations} registered</span>
+                </div>
+                <Link
+                  href={`/events/${event.id}`}
+                  className="btn-primary"
+                  style={{ padding: '0.5rem 1.25rem', fontSize: '0.8125rem' }}
+                >
+                  View Details →
                 </Link>
               </div>
             </div>
